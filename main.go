@@ -105,11 +105,15 @@ func main() {
 }
 
 func newClient(uri *url.URL, username, password string) (*nsnitro.Client, error) {
-	if username == "" && uri.User != nil {
-		username = uri.User.Username()
-	}
-	if password == "" && uri.User != nil {
-		password, _ = uri.User.Password()
+	if uri.User != nil {
+		if username == "" {
+			username = uri.User.Username()
+		}
+		if password == "" {
+			password, _ = uri.User.Password()
+		}
+
+		uri.User = nil
 	}
 
 	config := &nsnitro.Config{
