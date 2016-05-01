@@ -1,0 +1,35 @@
+package main
+
+import (
+	"github.com/dylanmei/go-nsnitro/nsnitro"
+	"gopkg.in/alecthomas/kingpin.v2"
+)
+
+func doAddLBMonitor(client *nsnitro.Client) {
+	lbmonitor := nsnitro.LBMonitor{
+		Name: *add_lb_monitor_name,
+		Type: *add_lb_monitor_type,
+		Send: *add_lb_monitor_send,
+		Recv: *add_lb_monitor_recv,
+	}
+	if add_lb_monitor_port != nil {
+		lbmonitor.Port = *add_lb_monitor_port
+	}
+	if add_lb_monitor_interval != nil {
+		lbmonitor.Interval = *add_lb_monitor_interval
+	}
+
+	err := client.AddLBMonitor(lbmonitor)
+	if err != nil {
+		kingpin.Fatalf(err.Error())
+	}
+}
+
+func doRemoveLBMonitor(client *nsnitro.Client) {
+	err := client.RemoveLBMonitor(
+		*rm_lb_monitor_name,
+		*rm_lb_monitor_type)
+	if err != nil {
+		kingpin.Fatalf(err.Error())
+	}
+}

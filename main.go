@@ -18,6 +18,9 @@ var (
 	ns_username = app.Flag("username", "NetScaler Nitro API user name").Envar("NSNITRO_USERNAME").String()
 	ns_password = app.Flag("password", "NetScaler Nitro API password").Envar("NSNITRO_PASSWORD").String()
 
+	// let's resemble the stock cli
+	// https://support.citrix.com/servlet/KbServlet/download/23190-102-666049/NS-CommandReference-Guide.pdf
+
 	show                   = app.Command("show", "")
 	show_server            = show.Command("server", "Print one or all servers")
 	show_server_name       = show_server.Arg("name", "").String()
@@ -30,50 +33,55 @@ var (
 	show_servicegroup_name = show_servicegroup.Arg("name", "").String()
 	show_version           = show.Command("version", "Print the NetScalar version")
 
-	//	add                    = app.Command("add", "")
+	add = app.Command("add", "")
 	//	add_server             = add.Command("server", "")
 	//	add_server_name        = add_server.Arg("name", "").String()
 	//	add_server_ipv4        = add_server.Arg("ip", "").IP()
-	//	add_lb                 = add.Command("lb", "")
+	add_lb = add.Command("lb", "")
 	//	add_lb_vserver         = add_lb.Command("vserver", "")
 	//	add_lb_vserver_name    = add_lb_vserver.Arg("name", "").String()
 	//	add_lb_vserver_type    = add_lb_vserver.Arg("service-type", "").String()
 	//	add_lb_vserver_ipv4    = add_lb_vserver.Arg("ip", "").IP()
 	//	add_lb_vserver_port    = add_lb_vserver.Arg("port", "").Int()
-	//	add_lb_monitor         = add_lb.Command("monitor", "")
-	//	add_lb_monitor_name    = add_lb_monitor.Arg("name", "").String()
-	//	add_lb_monitor_type    = add_lb_monitor.Arg("type", "").String()
-	//	add_lb_monitor_send    = add_lb_monitor.Flag("send", "").String()
-	//	add_lb_monitor_recv    = add_lb_monitor.Flag("recv", "").String()
-	//	add_lb_monitor_port    = add_lb_monitor.Flag("dest-port", "").Int()
-	//	add_lb_monitor_headers = add_lb_monitor.Flag("custom-headers", "").String()
+	add_lb_monitor          = add_lb.Command("monitor", "Add an lb monitor")
+	add_lb_monitor_name     = add_lb_monitor.Arg("name", "Name of an lb monitor").Required().String()
+	add_lb_monitor_type     = add_lb_monitor.Arg("type", "Type of an lb monitor").Required().String()
+	add_lb_monitor_send     = add_lb_monitor.Flag("send", "String to send to a service").String()
+	add_lb_monitor_recv     = add_lb_monitor.Flag("recv", "String that expected from a service").String()
+	add_lb_monitor_port     = add_lb_monitor.Flag("destPort", "The port the probe is sent to").Int()
+	add_lb_monitor_interval = add_lb_monitor.Flag("interval", "Frequency of the probe sent to a service").Int()
 	//	add_servicegroup       = add.Command("servicegroup", "")
 	//	add_servicegroup_name  = add_servicegroup.Arg("name", "").String()
 	//	add_servicegroup_type  = add_servicegroup.Arg("service-type", "").String()
+	rm                 = app.Command("rm", "")
+	rm_lb              = rm.Command("lb", "")
+	rm_lb_monitor      = rm_lb.Command("monitor", "Remove an lb monitor")
+	rm_lb_monitor_name = rm_lb_monitor.Arg("name", "Name of an lb monitor").Required().String()
+	rm_lb_monitor_type = rm_lb_monitor.Arg("type", "Type of an lb monitor").Required().String()
 
 	bind                         = app.Command("bind", "")
 	bind_lb                      = bind.Command("lb", "")
-	bind_lb_monitor              = bind_lb.Command("monitor", "Bind an lb monitor to a service or service-group")
+	bind_lb_monitor              = bind_lb.Command("monitor", "Bind an lb monitor to a service or serviceGroup")
 	bind_lb_monitor_name         = bind_lb_monitor.Arg("name", "Name of an lb monitor").Required().String()
-	bind_lb_monitor_servicegroup = bind_lb_monitor.Flag("service-group", "Name of a service-group").String()
-	bind_lb_vserver              = bind_lb.Command("vserver", "Bind an lb vserver to a service or service-group")
+	bind_lb_monitor_servicegroup = bind_lb_monitor.Flag("serviceGroup", "Name of a serviceGroup").String()
+	bind_lb_vserver              = bind_lb.Command("vserver", "Bind an lb vserver to a service or serviceGroup")
 	bind_lb_vserver_name         = bind_lb_vserver.Arg("name", "Name of an lb vserver").Required().String()
-	bind_lb_vserver_servicegroup = bind_lb_vserver.Flag("service-group", "Name of a service-group").String()
-	bind_servicegroup            = bind.Command("servicegroup", "Bind a service-group to a service")
-	bind_servicegroup_name       = bind_servicegroup.Arg("name", "Name of an service-group").Required().String()
+	bind_lb_vserver_servicegroup = bind_lb_vserver.Flag("serviceGroup", "Name of a serviceGroup").String()
+	bind_servicegroup            = bind.Command("serviceGroup", "Bind a serviceGroup to a service")
+	bind_servicegroup_name       = bind_servicegroup.Arg("name", "Name of an serviceGroup").Required().String()
 	bind_servicegroup_server     = bind_servicegroup.Arg("server", "Name of a server").Required().String()
 	bind_servicegroup_port       = bind_servicegroup.Arg("port", "Port of a server").Required().Int()
 
 	unbind                         = app.Command("unbind", "")
 	unbind_lb                      = unbind.Command("lb", "")
-	unbind_lb_monitor              = unbind_lb.Command("monitor", "Unbind an lb monitor from a service or service-group")
+	unbind_lb_monitor              = unbind_lb.Command("monitor", "Unbind an lb monitor from a service or serviceGroup")
 	unbind_lb_monitor_name         = unbind_lb_monitor.Arg("name", "Name of an lb monitor").Required().String()
-	unbind_lb_monitor_servicegroup = unbind_lb_monitor.Flag("service-group", "Name of a service-group").String()
-	unbind_lb_vserver              = unbind_lb.Command("vserver", "Unbind an lb vserver from a service or service-group")
+	unbind_lb_monitor_servicegroup = unbind_lb_monitor.Flag("serviceGroup", "Name of a serviceGroup").String()
+	unbind_lb_vserver              = unbind_lb.Command("vserver", "Unbind an lb vserver from a service or serviceGroup")
 	unbind_lb_vserver_name         = unbind_lb_vserver.Arg("name", "Name of an lb vserver").Required().String()
-	unbind_lb_vserver_servicegroup = unbind_lb_vserver.Flag("service-group", "Name of a service-group").String()
-	unbind_servicegroup            = unbind.Command("servicegroup", "Unbind a service-group to a service")
-	unbind_servicegroup_name       = unbind_servicegroup.Arg("name", "Name of an service-group").Required().String()
+	unbind_lb_vserver_servicegroup = unbind_lb_vserver.Flag("serviceGroup", "Name of a serviceGroup").String()
+	unbind_servicegroup            = unbind.Command("servicegroup", "Unbind a serviceGroup to a service")
+	unbind_servicegroup_name       = unbind_servicegroup.Arg("name", "Name of an serviceGroup").Required().String()
 	unbind_servicegroup_server     = unbind_servicegroup.Arg("server", "Name of a server").Required().String()
 	unbind_servicegroup_port       = unbind_servicegroup.Arg("port", "Port of a server").Required().Int()
 )
@@ -92,37 +100,34 @@ func main() {
 	switch cmd {
 	case "show server":
 		doShowServer(client)
-		break
 	case "show servicegroup":
 		doShowServiceGroup(client)
-		break
 	case "show lb monitor":
 		doShowLBMonitor(client)
-		break
 	case "show lb vserver":
 		doShowLBVServer(client)
-		break
 	case "show version":
 		doShowVersion(client)
-		break
+
+	case "add lb monitor":
+		doAddLBMonitor(client)
+	case "rm lb monitor":
+		doRemoveLBMonitor(client)
+
 	case "bind lb monitor":
 		doBindLBMonitor(client)
-		break
 	case "unbind lb monitor":
 		doUnbindLBMonitor(client)
-		break
+
 	case "bind lb vserver":
 		doBindLBVServer(client)
-		break
 	case "unbind lb vserver":
 		doUnbindLBVServer(client)
-		break
+
 	case "bind servicegroup":
 		doBindServiceGroup(client)
-		break
 	case "unbind servicegroup":
 		doUnbindServiceGroup(client)
-		break
 	}
 }
 

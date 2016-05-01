@@ -3,10 +3,10 @@ package nsnitro
 type LBMonitor struct {
 	Name     string `json:"monitorname"`
 	Type     string `json:"type"`
-	Send     string `json:"send"`
-	Recv     string `json:"recv"`
-	Port     int    `json:"destport"`
-	Interval int    `json:"interval"`
+	Send     string `json:"send,omitempty"`
+	Recv     string `json:"recv,omitempty"`
+	Port     int    `json:"destport,omitempty"`
+	Interval int    `json:"interval,omitempty"`
 }
 
 func NewLBMonitor(name, monitorType string) LBMonitor {
@@ -41,10 +41,11 @@ func (c *Client) AddLBMonitor(lbmonitor LBMonitor) error {
 		})
 }
 
-func (c *Client) RemoveLBMonitor(name string) error {
+func (c *Client) RemoveLBMonitor(name, monitorType string) error {
 	return c.do("DELETE",
 		nsrequest{
-			Type: "lbmonitor",
-			Name: name,
+			Type:  "lbmonitor",
+			Name:  name,
+			Query: map[string]string{"args": "type:" + monitorType},
 		}, nil)
 }
