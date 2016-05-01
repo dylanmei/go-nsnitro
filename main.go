@@ -13,7 +13,7 @@ import (
 )
 
 var (
-	app         = kingpin.New("nsnitro", "A NetScaler Nitro API cli")
+	app         = kingpin.New("nsnitro", "A NetScaler 10+ Nitro API cli")
 	ns_server   = app.Flag("server", "URL of the NetScalar server").Envar("NSNITRO_SERVER").Required().URL()
 	ns_username = app.Flag("username", "NetScaler Nitro API user name").Envar("NSNITRO_USERNAME").String()
 	ns_password = app.Flag("password", "NetScaler Nitro API password").Envar("NSNITRO_PASSWORD").String()

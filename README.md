@@ -14,5 +14,6 @@ make
 bin/nsnitro help
 bin/nsnitro show version
 bin/nsnitro show server
-bin/nsnitro show lbvserver
+bin/nsnitro show lb vserver
+bin/nsnitro show lb monitor
 ```
