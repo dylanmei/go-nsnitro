@@ -22,7 +22,7 @@ func (c *Client) GetServiceGroup(name string) (ServiceGroup, error) {
 
 func (c *Client) GetServiceGroups() ([]ServiceGroup, error) {
 	servicegroups := []ServiceGroup{}
-	err := c.fetch(nsrequest{Type: "servicegroups"}, &servicegroups)
+	err := c.fetch(nsrequest{Type: "servicegroup"}, &servicegroups)
 	return servicegroups, err
 }
 
