@@ -218,16 +218,27 @@ func (c *Client) fetch(request nsrequest, result interface{}) error {
 
 func querystr(kvp map[string]string) string {
 	values := []string{}
-	for k, v := range kvp {
-		op := strings.SplitN(v, ":", 2)
-		if len(op) == 1 {
+	for key, value := range kvp {
+
+		if !strings.Contains(value, ":") {
 			// example: 'bind' in 'action=bind'
-			values = append(values, fmt.Sprintf("%s=%s", k, v))
+			values = append(values, fmt.Sprintf("%s=%s", key, value))
+			continue
 		}
-		if len(op) == 2 {
-			// example: 'name:/test/' in 'filter=name:/test/'
-			values = append(values, fmt.Sprintf("%s=%s:%s", k, op[0], url.QueryEscape(op[1])))
+
+		criterias := []string{}
+		// example: 'name:/test/' in 'filter=name:/test/'
+		for _, criteria := range strings.Split(value, ",") {
+			parts := strings.Split(criteria, ":")
+			if len(parts) == 1 {
+				criterias = append(criterias, criteria)
+			}
+			if len(parts) == 2 {
+				criterias = append(criterias, fmt.Sprintf("%s:%s", parts[0], url.QueryEscape(parts[1])))
+			}
 		}
+
+		values = append(values, fmt.Sprintf("%s=%s", key, strings.Join(criterias, ",")))
 	}
 
 	return strings.Join(values, "&")

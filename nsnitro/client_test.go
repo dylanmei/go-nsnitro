@@ -117,3 +117,31 @@ func Test_client_handle_api_error(t *testing.T) {
 	require.NotNil(t, err)
 	assert.Equal(t, err.Error(), "Server already exists [server1]")
 }
+
+func Test_client_query_handling(t *testing.T) {
+	cases := []struct {
+		query  map[string]string
+		expect string
+	}{
+		{
+			query:  map[string]string{},
+			expect: "",
+		}, {
+			query:  map[string]string{"action": "bind"},
+			expect: "action=bind",
+		}, {
+			query:  map[string]string{"filter": "name:/test/"},
+			expect: "filter=name:%2Ftest%2F",
+		}, {
+			query:  map[string]string{"args": "server:test,port:123"},
+			expect: "args=server:test,port:123",
+		},
+	}
+
+	for _, c := range cases {
+		query := querystr(c.query)
+		if query != c.expect {
+			t.Errorf("Expected query %q, got %q", c.expect, query)
+		}
+	}
+}
