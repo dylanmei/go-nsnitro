@@ -11,6 +11,8 @@ import (
 	"net/url"
 	"strings"
 
+	"github.com/mgutz/logxi/v1"
+
 	jp "github.com/buger/jsonparser"
 )
 
@@ -82,6 +84,10 @@ func (c *Client) Version() (string, error) {
 		return "", err
 	}
 
+	if log.IsDebug() {
+		log.Debug("response", "status", res.Status, "body", string(body))
+	}
+
 	if res.StatusCode != 200 {
 		return "", errors.New(fmt.Sprintf("Unexpected HTTP status: %d", res.StatusCode))
 	}
@@ -126,13 +132,17 @@ func (c *Client) do(verb string, request nsrequest, resource *nsresource) error 
 		return err
 	}
 
-	if res.Status == "201 Created" {
-		return nil
+	defer res.Body.Close()
+	body, err := ioutil.ReadAll(res.Body)
+	if log.IsDebug() {
+		if len(body) == 0 {
+			log.Debug("response", "status", res.Status)
+		} else {
+			log.Debug("response", "status", res.Status, "body", string(body))
+		}
 	}
 
-	defer res.Body.Close()
 	if res.StatusCode >= 200 && res.StatusCode <= 299 {
-		body, err := ioutil.ReadAll(res.Body)
 		if err != nil {
 			return errors.New(fmt.Sprintf("Unable to read HTTP response: %s", err.Error()))
 		}
@@ -183,6 +193,10 @@ func (c *Client) fetch(request nsrequest, result interface{}) error {
 		return err
 	}
 
+	if log.IsDebug() {
+		log.Debug("response", "status", res.Status, "body", string(body))
+	}
+
 	if res.StatusCode >= 200 && res.StatusCode <= 299 {
 		if res.StatusCode == 400 {
 			return nil
@@ -219,9 +233,9 @@ func querystr(kvp map[string]string) string {
 	return strings.Join(values, "&")
 }
 
-func (c *Client) request(method, path string, body io.Reader) (*http.Request, error) {
+func (c *Client) request(verb, path string, body io.Reader) (*http.Request, error) {
 	uri := fmt.Sprintf("%v/nitro/v1/%s", c.config.URL, path)
-	req, err := http.NewRequest(method, uri, body)
+	req, err := http.NewRequest(verb, uri, body)
 	if err != nil {
 		return nil, err
 	}
@@ -232,5 +246,6 @@ func (c *Client) request(method, path string, body io.Reader) (*http.Request, er
 		req.Header.Set("X-NITRO-PASS", c.config.Password)
 	}
 
+	log.Debug("request", "verb", verb, "uri", uri)
 	return req, nil
 }
