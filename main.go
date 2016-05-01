@@ -56,9 +56,13 @@ var (
 	bind_lb_monitor              = bind_lb.Command("monitor", "Bind an lb monitor to a service or service-group")
 	bind_lb_monitor_name         = bind_lb_monitor.Arg("name", "Name of an lb monitor").Required().String()
 	bind_lb_monitor_servicegroup = bind_lb_monitor.Flag("service-group", "Name of a service-group").String()
-	bind_lb_vserver              = bind_lb.Command("vserver", "Bind an lb vserver from a service or service-group")
+	bind_lb_vserver              = bind_lb.Command("vserver", "Bind an lb vserver to a service or service-group")
 	bind_lb_vserver_name         = bind_lb_vserver.Arg("name", "Name of an lb vserver").Required().String()
 	bind_lb_vserver_servicegroup = bind_lb_vserver.Flag("service-group", "Name of a service-group").String()
+	bind_servicegroup            = bind.Command("servicegroup", "Bind a service-group to a service")
+	bind_servicegroup_name       = bind_servicegroup.Arg("name", "Name of an service-group").Required().String()
+	bind_servicegroup_server     = bind_servicegroup.Arg("server", "Name of a server").Required().String()
+	bind_servicegroup_port       = bind_servicegroup.Arg("port", "Port of a server").Required().Int()
 
 	unbind                         = app.Command("unbind", "")
 	unbind_lb                      = unbind.Command("lb", "")
@@ -68,6 +72,10 @@ var (
 	unbind_lb_vserver              = unbind_lb.Command("vserver", "Unbind an lb vserver from a service or service-group")
 	unbind_lb_vserver_name         = unbind_lb_vserver.Arg("name", "Name of an lb vserver").Required().String()
 	unbind_lb_vserver_servicegroup = unbind_lb_vserver.Flag("service-group", "Name of a service-group").String()
+	unbind_servicegroup            = unbind.Command("servicegroup", "Unbind a service-group to a service")
+	unbind_servicegroup_name       = unbind_servicegroup.Arg("name", "Name of an service-group").Required().String()
+	unbind_servicegroup_server     = unbind_servicegroup.Arg("server", "Name of a server").Required().String()
+	unbind_servicegroup_port       = unbind_servicegroup.Arg("port", "Port of a server").Required().Int()
 )
 
 func main() {
@@ -108,6 +116,12 @@ func main() {
 		break
 	case "unbind lb vserver":
 		doUnbindLBVServer(client)
+		break
+	case "bind servicegroup":
+		doBindServiceGroup(client)
+		break
+	case "unbind servicegroup":
+		doUnbindServiceGroup(client)
 		break
 	}
 }

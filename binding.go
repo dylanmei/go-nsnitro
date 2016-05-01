@@ -44,3 +44,25 @@ func doUnbindLBVServer(client *nsnitro.Client) {
 		kingpin.Fatalf(err.Error())
 	}
 }
+
+func doBindServiceGroup(client *nsnitro.Client) {
+	err := client.BindServiceGroupToServer(
+		*bind_servicegroup_name,
+		*bind_servicegroup_server,
+		*bind_servicegroup_port)
+
+	if err != nil {
+		kingpin.Fatalf(err.Error())
+	}
+}
+
+func doUnbindServiceGroup(client *nsnitro.Client) {
+	err := client.UnbindServiceGroupFromServer(
+		*unbind_servicegroup_name,
+		*unbind_servicegroup_server,
+		*unbind_servicegroup_port)
+
+	if err != nil {
+		kingpin.Fatalf(err.Error())
+	}
+}
