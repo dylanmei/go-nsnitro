@@ -24,3 +24,23 @@ func doUnbindLBMonitor(client *nsnitro.Client) {
 		kingpin.Fatalf(err.Error())
 	}
 }
+
+func doBindLBVServer(client *nsnitro.Client) {
+	err := client.BindLBVServerToServiceGroup(
+		*bind_lb_vserver_name,
+		*bind_lb_vserver_servicegroup)
+
+	if err != nil {
+		kingpin.Fatalf(err.Error())
+	}
+}
+
+func doUnbindLBVServer(client *nsnitro.Client) {
+	err := client.UnbindLBVServerFromServiceGroup(
+		*unbind_lb_vserver_name,
+		*unbind_lb_vserver_servicegroup)
+
+	if err != nil {
+		kingpin.Fatalf(err.Error())
+	}
+}

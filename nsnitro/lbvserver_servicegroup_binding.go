@@ -29,7 +29,7 @@ func (c *Client) BindLBVServerToServiceGroup(lbvserverName, serviceGroupName str
 func (c *Client) UnbindLBVServerFromServiceGroup(lbvserverName, serviceGroupName string) error {
 	return c.do("DELETE",
 		nsrequest{
-			Name: serviceGroupName,
+			Name: lbvserverName,
 			Type: "lbvserver_servicegroup_binding",
 			Query: map[string]string{
 				"args": "servicegroupname:" + serviceGroupName,

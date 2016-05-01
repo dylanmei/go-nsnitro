@@ -55,17 +55,19 @@ var (
 	bind_lb                      = bind.Command("lb", "")
 	bind_lb_monitor              = bind_lb.Command("monitor", "Bind an lb monitor to a service or service-group")
 	bind_lb_monitor_name         = bind_lb_monitor.Arg("name", "Name of an lb monitor").Required().String()
-	bind_lb_monitor_servicegroup = bind_lb_monitor.Flag("service-group", "Name of the service-group to bind").String()
+	bind_lb_monitor_servicegroup = bind_lb_monitor.Flag("service-group", "Name of a service-group").String()
+	bind_lb_vserver              = bind_lb.Command("vserver", "Bind an lb vserver from a service or service-group")
+	bind_lb_vserver_name         = bind_lb_vserver.Arg("name", "Name of an lb vserver").Required().String()
+	bind_lb_vserver_servicegroup = bind_lb_vserver.Flag("service-group", "Name of a service-group").String()
 
 	unbind                         = app.Command("unbind", "")
 	unbind_lb                      = unbind.Command("lb", "")
 	unbind_lb_monitor              = unbind_lb.Command("monitor", "Unbind an lb monitor from a service or service-group")
 	unbind_lb_monitor_name         = unbind_lb_monitor.Arg("name", "Name of an lb monitor").Required().String()
-	unbind_lb_monitor_servicegroup = unbind_lb_monitor.Flag("service-group", "Name of the service-group to unbind").String()
-
-	//	unbind_lb_vserver              = unbind_lb.Command("vserver", "Unbind an lb vserver from a service or service-group")
-	//	unbind_lb_vserver_name         = unbind_lb_vserver.Arg("name", "Name of an lb vserver").Required().String()
-	//	unbind_lb_vserver_servicegroup = unbind_lb_vserver.Flag("service-group", "Name of the service-group to unbind").String()
+	unbind_lb_monitor_servicegroup = unbind_lb_monitor.Flag("service-group", "Name of a service-group").String()
+	unbind_lb_vserver              = unbind_lb.Command("vserver", "Unbind an lb vserver from a service or service-group")
+	unbind_lb_vserver_name         = unbind_lb_vserver.Arg("name", "Name of an lb vserver").Required().String()
+	unbind_lb_vserver_servicegroup = unbind_lb_vserver.Flag("service-group", "Name of a service-group").String()
 )
 
 func main() {
@@ -100,6 +102,12 @@ func main() {
 		break
 	case "unbind lb monitor":
 		doUnbindLBMonitor(client)
+		break
+	case "bind lb vserver":
+		doBindLBVServer(client)
+		break
+	case "unbind lb vserver":
+		doUnbindLBVServer(client)
 		break
 	}
 }
