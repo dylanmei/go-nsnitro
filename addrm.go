@@ -34,6 +34,27 @@ func doRemoveLBMonitor(client *nsnitro.Client) {
 	}
 }
 
+func doAddLBVServer(client *nsnitro.Client) {
+	lbvserver := nsnitro.LBVServer{
+		Name: *add_lb_vserver_name,
+		Type: *add_lb_vserver_type,
+		IP:   add_lb_vserver_ipv4.String(),
+		Port: *add_lb_vserver_port,
+	}
+
+	err := client.AddLBVServer(lbvserver)
+	if err != nil {
+		kingpin.Fatalf(err.Error())
+	}
+}
+
+func doRemoveLBVServer(client *nsnitro.Client) {
+	err := client.RemoveLBVServer(*rm_lb_vserver_name)
+	if err != nil {
+		kingpin.Fatalf(err.Error())
+	}
+}
+
 func doAddServer(client *nsnitro.Client) {
 	server := nsnitro.Server{
 		Name: *add_server_name,

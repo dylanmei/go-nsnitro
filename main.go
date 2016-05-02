@@ -20,6 +20,7 @@ var (
 
 	// let's resemble the stock cli
 	// https://support.citrix.com/servlet/KbServlet/download/23190-102-666049/NS-CommandReference-Guide.pdf
+	// limitations: case-sensitive & no long-short options
 
 	show                   = app.Command("show", "")
 	show_server            = show.Command("server", "Print one or all servers")
@@ -33,13 +34,8 @@ var (
 	show_servicegroup_name = show_servicegroup.Arg("name", "").String()
 	show_version           = show.Command("version", "Print the NetScalar version")
 
-	add    = app.Command("add", "")
-	add_lb = add.Command("lb", "")
-	//	add_lb_vserver         = add_lb.Command("vserver", "")
-	//	add_lb_vserver_name    = add_lb_vserver.Arg("name", "").String()
-	//	add_lb_vserver_type    = add_lb_vserver.Arg("service-type", "").String()
-	//	add_lb_vserver_ipv4    = add_lb_vserver.Arg("ip", "").IP()
-	//	add_lb_vserver_port    = add_lb_vserver.Arg("port", "").Int()
+	add                     = app.Command("add", "")
+	add_lb                  = add.Command("lb", "")
 	add_lb_monitor          = add_lb.Command("monitor", "Add an lb monitor")
 	add_lb_monitor_name     = add_lb_monitor.Arg("name", "Name of an lb monitor").Required().String()
 	add_lb_monitor_type     = add_lb_monitor.Arg("type", "Type of an lb monitor").Required().String()
@@ -47,6 +43,11 @@ var (
 	add_lb_monitor_recv     = add_lb_monitor.Flag("recv", "String that expected from a service").String()
 	add_lb_monitor_port     = add_lb_monitor.Flag("destport", "The port the probe is sent to").Int()
 	add_lb_monitor_interval = add_lb_monitor.Flag("interval", "Frequency of the probe sent to a service").Int()
+	add_lb_vserver          = add_lb.Command("vserver", "Add an lb vserver")
+	add_lb_vserver_name     = add_lb_vserver.Arg("name", "Name of an lb vserver").Required().String()
+	add_lb_vserver_type     = add_lb_vserver.Arg("servicetype", "Type of an lb vserver").Required().String()
+	add_lb_vserver_ipv4     = add_lb_vserver.Arg("ip", "IP address of an lb vserver").Required().IP()
+	add_lb_vserver_port     = add_lb_vserver.Arg("port", "Port of an lb vserver").Required().Int()
 	add_server              = add.Command("server", "Add a server")
 	add_server_name         = add_server.Arg("name", "Name of a server").Required().String()
 	add_server_ipv4         = add_server.Arg("ip", "IP address of a server").Required().IP()
@@ -59,6 +60,8 @@ var (
 	rm_lb_monitor        = rm_lb.Command("monitor", "Remove an lb monitor")
 	rm_lb_monitor_name   = rm_lb_monitor.Arg("name", "Name of an lb monitor").Required().String()
 	rm_lb_monitor_type   = rm_lb_monitor.Arg("type", "Type of an lb monitor").Required().String()
+	rm_lb_vserver        = rm_lb.Command("vserver", "Remove an lb vserver")
+	rm_lb_vserver_name   = rm_lb_vserver.Arg("name", "Name of an lb vserver").Required().String()
 	rm_server            = rm.Command("server", "Remove a server")
 	rm_server_name       = rm_server.Arg("name", "Name of a server").Required().String()
 	rm_servicegroup      = rm.Command("servicegroup", "Remove a servicegroup")
@@ -118,10 +121,17 @@ func main() {
 		doAddLBMonitor(client)
 	case "rm lb monitor":
 		doRemoveLBMonitor(client)
+
+	case "add lb vserver":
+		doAddLBVServer(client)
+	case "rm lb vserver":
+		doRemoveLBVServer(client)
+
 	case "add server":
 		doAddServer(client)
 	case "rm server":
 		doRemoveServer(client)
+
 	case "add servicegroup":
 		doAddServiceGroup(client)
 	case "rm servicegroup":

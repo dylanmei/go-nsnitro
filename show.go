@@ -108,14 +108,14 @@ func doShowLBMonitor(client *nsnitro.Client) {
 func doShowLBVServer(client *nsnitro.Client) {
 	var t table.Table
 	if *show_lb_vserver_name == "" {
-		t = newTable("Name", "IP", "Port", "Type")
+		t = newTable("Name", "Type", "IP", "Port")
 		lbvservers, err := client.GetLBVServers()
 		if err != nil {
 			kingpin.Fatalf(err.Error())
 		}
 
 		for _, lbvserver := range lbvservers {
-			t.AddRow(lbvserver.Name, lbvserver.IP, lbvserver.Port, lbvserver.Type)
+			t.AddRow(lbvserver.Name, lbvserver.Type, lbvserver.IP, lbvserver.Port)
 		}
 	} else {
 		t = newPanel("LBVServer")
@@ -124,9 +124,9 @@ func doShowLBVServer(client *nsnitro.Client) {
 			kingpin.Fatalf(err.Error())
 		}
 		t.AddRow("Name", lbvserver.Name)
+		t.AddRow("Type", lbvserver.Type)
 		t.AddRow("IP", lbvserver.IP)
 		t.AddRow("Port", lbvserver.Port)
-		t.AddRow("Type", lbvserver.Type)
 
 		serviceGroupBindings, err := client.GetLBVServerServiceGroupBindings(*show_lb_vserver_name)
 		if err != nil {
