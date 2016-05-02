@@ -34,6 +34,25 @@ func doRemoveLBMonitor(client *nsnitro.Client) {
 	}
 }
 
+func doAddServer(client *nsnitro.Client) {
+	server := nsnitro.Server{
+		Name: *add_server_name,
+		IP:   add_server_ipv4.String(),
+	}
+
+	err := client.AddServer(server)
+	if err != nil {
+		kingpin.Fatalf(err.Error())
+	}
+}
+
+func doRemoveServer(client *nsnitro.Client) {
+	err := client.RemoveServer(*rm_server_name)
+	if err != nil {
+		kingpin.Fatalf(err.Error())
+	}
+}
+
 func doAddServiceGroup(client *nsnitro.Client) {
 	servicegroup := nsnitro.ServiceGroup{
 		Name: *add_servicegroup_name,

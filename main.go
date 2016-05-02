@@ -33,10 +33,7 @@ var (
 	show_servicegroup_name = show_servicegroup.Arg("name", "").String()
 	show_version           = show.Command("version", "Print the NetScalar version")
 
-	add = app.Command("add", "")
-	//	add_server             = add.Command("server", "")
-	//	add_server_name        = add_server.Arg("name", "").String()
-	//	add_server_ipv4        = add_server.Arg("ip", "").IP()
+	add    = app.Command("add", "")
 	add_lb = add.Command("lb", "")
 	//	add_lb_vserver         = add_lb.Command("vserver", "")
 	//	add_lb_vserver_name    = add_lb_vserver.Arg("name", "").String()
@@ -50,6 +47,9 @@ var (
 	add_lb_monitor_recv     = add_lb_monitor.Flag("recv", "String that expected from a service").String()
 	add_lb_monitor_port     = add_lb_monitor.Flag("destport", "The port the probe is sent to").Int()
 	add_lb_monitor_interval = add_lb_monitor.Flag("interval", "Frequency of the probe sent to a service").Int()
+	add_server              = add.Command("server", "Add a server")
+	add_server_name         = add_server.Arg("name", "Name of a server").Required().String()
+	add_server_ipv4         = add_server.Arg("ip", "IP address of a server").Required().IP()
 	add_servicegroup        = add.Command("servicegroup", "Add a servicegroup")
 	add_servicegroup_name   = add_servicegroup.Arg("name", "Name of a servicegroup").Required().String()
 	add_servicegroup_type   = add_servicegroup.Arg("servicetype", "Type of servicegroup").Required().String()
@@ -59,6 +59,8 @@ var (
 	rm_lb_monitor        = rm_lb.Command("monitor", "Remove an lb monitor")
 	rm_lb_monitor_name   = rm_lb_monitor.Arg("name", "Name of an lb monitor").Required().String()
 	rm_lb_monitor_type   = rm_lb_monitor.Arg("type", "Type of an lb monitor").Required().String()
+	rm_server            = rm.Command("server", "Remove a server")
+	rm_server_name       = rm_server.Arg("name", "Name of a server").Required().String()
 	rm_servicegroup      = rm.Command("servicegroup", "Remove a servicegroup")
 	rm_servicegroup_name = rm_servicegroup.Arg("name", "Name of a servicegroup").Required().String()
 
@@ -116,6 +118,10 @@ func main() {
 		doAddLBMonitor(client)
 	case "rm lb monitor":
 		doRemoveLBMonitor(client)
+	case "add server":
+		doAddServer(client)
+	case "rm server":
+		doRemoveServer(client)
 	case "add servicegroup":
 		doAddServiceGroup(client)
 	case "rm servicegroup":
