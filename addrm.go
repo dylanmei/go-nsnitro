@@ -33,3 +33,22 @@ func doRemoveLBMonitor(client *nsnitro.Client) {
 		kingpin.Fatalf(err.Error())
 	}
 }
+
+func doAddServiceGroup(client *nsnitro.Client) {
+	servicegroup := nsnitro.ServiceGroup{
+		Name: *add_servicegroup_name,
+		Type: *add_servicegroup_type,
+	}
+
+	err := client.AddServiceGroup(servicegroup)
+	if err != nil {
+		kingpin.Fatalf(err.Error())
+	}
+}
+
+func doRemoveServiceGroup(client *nsnitro.Client) {
+	err := client.RemoveServiceGroup(*rm_servicegroup_name)
+	if err != nil {
+		kingpin.Fatalf(err.Error())
+	}
+}
