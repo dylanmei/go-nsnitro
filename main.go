@@ -14,7 +14,7 @@ import (
 
 var (
 	app         = kingpin.New("nsnitro", "A NetScaler 10+ Nitro API cli")
-	ns_server   = app.Flag("server", "URL of the NetScalar server").Envar("NSNITRO_SERVER").Required().URL()
+	ns_server   = app.Flag("server", "URL of the NetScaler server").Envar("NSNITRO_SERVER").Required().URL()
 	ns_username = app.Flag("username", "NetScaler Nitro API user name").Envar("NSNITRO_USERNAME").String()
 	ns_password = app.Flag("password", "NetScaler Nitro API password").Envar("NSNITRO_PASSWORD").String()
 
@@ -88,7 +88,7 @@ var (
 	unbind_lb_vserver              = unbind_lb.Command("vserver", "Unbind an lb vserver from a service or servicegroup")
 	unbind_lb_vserver_name         = unbind_lb_vserver.Arg("name", "Name of an lb vserver").Required().String()
 	unbind_lb_vserver_servicegroup = unbind_lb_vserver.Flag("servicegroup", "Name of a servicegroup").String()
-	unbind_servicegroup            = unbind.Command("servicegroup", "Unbind a servicegroup to a service")
+	unbind_servicegroup            = unbind.Command("servicegroup", "Unbind a servicegroup from a service")
 	unbind_servicegroup_name       = unbind_servicegroup.Arg("name", "Name of an servicegroup").Required().String()
 	unbind_servicegroup_server     = unbind_servicegroup.Arg("server", "Name of a server").Required().String()
 	unbind_servicegroup_port       = unbind_servicegroup.Arg("port", "Port of a server").Required().Int()
