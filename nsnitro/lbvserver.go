@@ -1,14 +1,17 @@
 package nsnitro
 
 type LBVServer struct {
-	Name string `json:"name"`
-	Type string `json:"servicetype"`
-	IP   string `json:"ipv46"`
-	Port int    `json:"port"`
+	Name     string `json:"name"`
+	Type     string `json:"servicetype"`
+	IP       string `json:"ipv46"`
+	Port     int    `json:"port"`
+	Mode     string `json:"m,omitempty"`
+	Weight   int    `json:"weight,omitempty"`
+	LBMethod string `json:"lbmethod,omitempty"`
 }
 
 func NewLBVServer(name, serviceType, ip string, port int) LBVServer {
-	return LBVServer{name, serviceType, ip, port}
+	return LBVServer{Name: name, Type: serviceType, IP: ip, Port: port}
 }
 
 func (c *Client) GetLBVServer(name string) (LBVServer, error) {

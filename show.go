@@ -30,6 +30,7 @@ func doShowServer(client *nsnitro.Client) {
 		}
 		t.AddRow("Name", server.Name)
 		t.AddRow("IP", server.IP)
+		t.AddRow("State", server.State)
 	}
 
 	t.Print()
@@ -55,6 +56,7 @@ func doShowServiceGroup(client *nsnitro.Client) {
 		}
 		t.AddRow("Name", servicegroup.Name)
 		t.AddRow("Type", servicegroup.Type)
+		t.AddRow("State", servicegroup.State)
 
 		serverBindings, err := client.GetServiceGroupServerBindings(*show_servicegroup_name)
 		if err != nil {
@@ -96,6 +98,7 @@ func doShowLBMonitor(client *nsnitro.Client) {
 		}
 		t.AddRow("Name", lbmonitor.Name)
 		t.AddRow("Type", lbmonitor.Type)
+		t.AddRow("State", lbmonitor.State)
 		t.AddRow("Port", lbmonitor.Port)
 		t.AddRow("Send", lbmonitor.Send)
 		t.AddRow("Recv", lbmonitor.Recv)
@@ -127,6 +130,9 @@ func doShowLBVServer(client *nsnitro.Client) {
 		t.AddRow("Type", lbvserver.Type)
 		t.AddRow("IP", lbvserver.IP)
 		t.AddRow("Port", lbvserver.Port)
+		t.AddRow("Mode", lbvserver.Mode)
+		t.AddRow("Weight", lbvserver.Weight)
+		t.AddRow("LB Method", lbvserver.LBMethod)
 
 		serviceGroupBindings, err := client.GetLBVServerServiceGroupBindings(*show_lb_vserver_name)
 		if err != nil {

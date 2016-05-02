@@ -1,12 +1,13 @@
 package nsnitro
 
 type ServiceGroup struct {
-	Name string `json:"servicegroupname"`
-	Type string `json:"servicetype"`
+	Name  string `json:"servicegroupname"`
+	Type  string `json:"servicetype"`
+	State string `json:"state,omitempty"`
 }
 
 func NewServiceGroup(name, serviceType string) ServiceGroup {
-	return ServiceGroup{name, serviceType}
+	return ServiceGroup{Name: name, Type: serviceType}
 }
 
 func (c *Client) GetServiceGroup(name string) (ServiceGroup, error) {

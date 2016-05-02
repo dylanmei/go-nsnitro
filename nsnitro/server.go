@@ -1,12 +1,13 @@
 package nsnitro
 
 type Server struct {
-	Name string `json:"name"`
-	IP   string `json:"ipaddress"`
+	Name  string `json:"name"`
+	IP    string `json:"ipaddress"`
+	State string `json:"state,omitempty"`
 }
 
 func NewServer(name, ip string) Server {
-	return Server{name, ip}
+	return Server{Name: name, IP: ip}
 }
 
 func (c *Client) GetServer(name string) (Server, error) {

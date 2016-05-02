@@ -3,6 +3,7 @@ package nsnitro
 type LBMonitor struct {
 	Name     string `json:"monitorname"`
 	Type     string `json:"type"`
+	State    string `json:"state,omitempty"`
 	Send     string `json:"send,omitempty"`
 	Recv     string `json:"recv,omitempty"`
 	Port     int    `json:"destport,omitempty"`
