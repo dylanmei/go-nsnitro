@@ -146,6 +146,41 @@ func doShowLBVServer(client *nsnitro.Client) {
 	t.Print()
 }
 
+func doShowSSLVServer(client *nsnitro.Client) {
+	var t table.Table
+	if *show_ssl_vserver_name == "" {
+		t = newTable("Name")
+		sslvservers, err := client.GetSSLVServers()
+		if err != nil {
+			kingpin.Fatalf(err.Error())
+		}
+
+		for _, sslvserver := range sslvservers {
+			t.AddRow(sslvserver.Name)
+		}
+	} else {
+		t = newPanel("SSLVServer")
+		sslvserver, err := client.GetSSLVServer(*show_ssl_vserver_name)
+		if err != nil {
+			kingpin.Fatalf(err.Error())
+		}
+		t.AddRow("Name", sslvserver.Name)
+		t.AddRow("Client Auth", sslvserver.ClientAuth)
+		t.AddRow("Cipher Redirect", sslvserver.CipherRedirect)
+		t.AddRow("DH", sslvserver.DH)
+		t.AddRow("SSL2", sslvserver.SSL2)
+		t.AddRow("SSL3", sslvserver.SSL3)
+		t.AddRow("Session Reuse", sslvserver.SessionReuse)
+		t.AddRow("Session Timeout", sslvserver.SessionTimeout)
+		t.AddRow("SSL Redirect", sslvserver.SSLRedirect)
+		t.AddRow("TLS1", sslvserver.TLS1)
+		t.AddRow("TLS11", sslvserver.TLS11)
+		t.AddRow("TLS22", sslvserver.TLS12)
+	}
+
+	t.Print()
+}
+
 func doShowVersion(client *nsnitro.Client) {
 	version, err := client.Version()
 	if err != nil {

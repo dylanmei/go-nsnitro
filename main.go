@@ -24,14 +24,17 @@ var (
 
 	show                   = app.Command("show", "")
 	show_server            = show.Command("server", "Print one or all servers")
-	show_server_name       = show_server.Arg("name", "").String()
+	show_server_name       = show_server.Arg("name", "Name of a server").String()
 	show_lb                = show.Command("lb", "")
 	show_lb_vserver        = show_lb.Command("vserver", "Print one or all lb vservers")
-	show_lb_vserver_name   = show_lb_vserver.Arg("name", "").String()
+	show_lb_vserver_name   = show_lb_vserver.Arg("name", "Name of an lb vserver").String()
 	show_lb_monitor        = show_lb.Command("monitor", "Print one or all lb monitors")
-	show_lb_monitor_name   = show_lb_monitor.Arg("name", "").String()
+	show_lb_monitor_name   = show_lb_monitor.Arg("name", "Name of an lb monitor").String()
 	show_servicegroup      = show.Command("servicegroup", "Print one or all servicegroups")
-	show_servicegroup_name = show_servicegroup.Arg("name", "").String()
+	show_servicegroup_name = show_servicegroup.Arg("name", "Name of a servicegroup").String()
+	show_ssl               = show.Command("ssl", "")
+	show_ssl_vserver       = show_ssl.Command("vserver", "Print one or all ssl vservers")
+	show_ssl_vserver_name  = show_ssl_vserver.Arg("name", "Name of an ssl vserver").String()
 	show_version           = show.Command("version", "Print the NetScalar version")
 
 	add                     = app.Command("add", "")
@@ -106,14 +109,16 @@ func main() {
 	}
 
 	switch cmd {
-	case "show server":
-		doShowServer(client)
-	case "show servicegroup":
-		doShowServiceGroup(client)
 	case "show lb monitor":
 		doShowLBMonitor(client)
 	case "show lb vserver":
 		doShowLBVServer(client)
+	case "show ssl vserver":
+		doShowSSLVServer(client)
+	case "show server":
+		doShowServer(client)
+	case "show servicegroup":
+		doShowServiceGroup(client)
 	case "show version":
 		doShowVersion(client)
 
