@@ -22,25 +22,30 @@ var (
 	// https://support.citrix.com/servlet/KbServlet/download/23190-102-666049/NS-CommandReference-Guide.pdf
 	// limitations: case-sensitive & no long-short options
 
-	show                     = app.Command("show", "")
-	show_rewrite             = show.Command("rewrite", "")
-	show_rewrite_action      = show_rewrite.Command("action", "Print one or all rewrite actions")
-	show_rewrite_action_name = show_rewrite_action.Arg("name", "Name of a rewrite action").String()
-	show_rewrite_policy      = show_rewrite.Command("policy", "Print one or all rewrite policies")
-	show_rewrite_policy_name = show_rewrite_policy.Arg("name", "Name of a rewrite policy").String()
-	show_server              = show.Command("server", "Print one or all servers")
-	show_server_name         = show_server.Arg("name", "Name of a server").String()
-	show_lb                  = show.Command("lb", "")
-	show_lb_vserver          = show_lb.Command("vserver", "Print one or all lb vservers")
-	show_lb_vserver_name     = show_lb_vserver.Arg("name", "Name of an lb vserver").String()
-	show_lb_monitor          = show_lb.Command("monitor", "Print one or all lb monitors")
-	show_lb_monitor_name     = show_lb_monitor.Arg("name", "Name of an lb monitor").String()
-	show_servicegroup        = show.Command("servicegroup", "Print one or all servicegroups")
-	show_servicegroup_name   = show_servicegroup.Arg("name", "Name of a servicegroup").String()
-	show_ssl                 = show.Command("ssl", "")
-	show_ssl_vserver         = show_ssl.Command("vserver", "Print one or all ssl vservers")
-	show_ssl_vserver_name    = show_ssl_vserver.Arg("name", "Name of an ssl vserver").String()
-	show_version             = show.Command("version", "Print the NetScalar version")
+	show                       = app.Command("show", "")
+	show_responder             = show.Command("responder", "")
+	show_responder_action      = show_responder.Command("action", "Print one or all responder actions")
+	show_responder_action_name = show_responder_action.Arg("name", "Name of a responder action").String()
+	show_responder_policy      = show_responder.Command("policy", "Print one or all responder policies")
+	show_responder_policy_name = show_responder_policy.Arg("name", "Name of a responder policy").String()
+	show_rewrite               = show.Command("rewrite", "")
+	show_rewrite_action        = show_rewrite.Command("action", "Print one or all rewrite actions")
+	show_rewrite_action_name   = show_rewrite_action.Arg("name", "Name of a rewrite action").String()
+	show_rewrite_policy        = show_rewrite.Command("policy", "Print one or all rewrite policies")
+	show_rewrite_policy_name   = show_rewrite_policy.Arg("name", "Name of a rewrite policy").String()
+	show_server                = show.Command("server", "Print one or all servers")
+	show_server_name           = show_server.Arg("name", "Name of a server").String()
+	show_lb                    = show.Command("lb", "")
+	show_lb_vserver            = show_lb.Command("vserver", "Print one or all lb vservers")
+	show_lb_vserver_name       = show_lb_vserver.Arg("name", "Name of an lb vserver").String()
+	show_lb_monitor            = show_lb.Command("monitor", "Print one or all lb monitors")
+	show_lb_monitor_name       = show_lb_monitor.Arg("name", "Name of an lb monitor").String()
+	show_servicegroup          = show.Command("servicegroup", "Print one or all servicegroups")
+	show_servicegroup_name     = show_servicegroup.Arg("name", "Name of a servicegroup").String()
+	show_ssl                   = show.Command("ssl", "")
+	show_ssl_vserver           = show_ssl.Command("vserver", "Print one or all ssl vservers")
+	show_ssl_vserver_name      = show_ssl_vserver.Arg("name", "Name of an ssl vserver").String()
+	show_version               = show.Command("version", "Print the NetScalar version")
 
 	add                     = app.Command("add", "")
 	add_lb                  = add.Command("lb", "")
@@ -114,6 +119,10 @@ func main() {
 	}
 
 	switch cmd {
+	case "show responder action":
+		doShowResponderAction(client)
+	case "show responder policy":
+		doShowResponderPolicy(client)
 	case "show rewrite action":
 		doShowRewriteAction(client)
 	case "show rewrite policy":

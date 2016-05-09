@@ -10,6 +10,58 @@ import (
 	"github.com/rodaine/table"
 )
 
+func doShowResponderAction(client *nsnitro.Client) {
+	var t table.Table
+	if *show_responder_action_name == "" {
+		t = newTable("Name", "Type")
+		actions, err := client.GetResponderActions()
+		if err != nil {
+			kingpin.Fatalf(err.Error())
+		}
+
+		for _, action := range actions {
+			t.AddRow(action.Name, action.Type)
+		}
+	} else {
+		t = newPanel("ResponderAction")
+		action, err := client.GetResponderAction(*show_responder_action_name)
+		if err != nil {
+			kingpin.Fatalf(err.Error())
+		}
+		t.AddRow("Name", action.Name)
+		t.AddRow("Type", action.Type)
+		t.AddRow("Target", action.Target)
+	}
+
+	t.Print()
+}
+
+func doShowResponderPolicy(client *nsnitro.Client) {
+	var t table.Table
+	if *show_responder_policy_name == "" {
+		t = newTable("Name", "Action")
+		policies, err := client.GetResponderPolicies()
+		if err != nil {
+			kingpin.Fatalf(err.Error())
+		}
+
+		for _, policy := range policies {
+			t.AddRow(policy.Name, policy.Action)
+		}
+	} else {
+		t = newPanel("ResponderPolicy")
+		policy, err := client.GetResponderPolicy(*show_responder_policy_name)
+		if err != nil {
+			kingpin.Fatalf(err.Error())
+		}
+		t.AddRow("Name", policy.Name)
+		t.AddRow("Action", policy.Action)
+		t.AddRow("Rule", policy.Rule)
+	}
+
+	t.Print()
+}
+
 func doShowRewriteAction(client *nsnitro.Client) {
 	var t table.Table
 	if *show_rewrite_action_name == "" {
